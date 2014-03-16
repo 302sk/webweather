@@ -11,27 +11,61 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width">
         <script src="js/libs/jquery/jquery.js">
         </script>
-        
+        <link rel="stylesheet" type="text/css" href="weather.css">
         <script>
             var cityname = "london";
+            var debug_name = "wuhan"; //debug
             var weather_url = "http://api.openweathermap.org/data/2.5/find?q=";
             var get_geo_addr = "http://smart-ip.net/geoip-json?callback=?";  //get geo address from ip
+            var weather_img = "pic/";
             $(document).ready(function(){
                $.getJSON(get_geo_addr,
                         function(data, status){
                            // alert(status);
                             cityname = data.city;
+                            cityname = debug_name;  //debug
                             weather_url += cityname;
                             $.getJSON(weather_url,
                             function(data){
-                                    document.getElementById("message").innerHTML = data.list[0].name + ":" + data.list[0].weather[0].description;
+                                    document.getElementById("weather_info").innerHTML = data.list[0].name + ":" + data.list[0].weather[0].description;
+                                    weather_img = weather_img + data.list[0].weather[0].icon + ".png";
+                                    //append html element to the div tag
+                                    var html_string = "<img src=\'" + weather_img + "\'>";
+                                    document.getElementById("weather_board").innerHTML += html_string;
                             });
                          });   
             });
         </script>
     </head>
     <body>
-        <div id="message">Loading weather data...</div>
-        <!--<button>Loading weather data...</button>-->
+        <!--add in branch develop-->
+        <div id="weather_board">
+            <p id="weather_info">Loading weather data...</p>
+            
+        </div>
+        <button id="show_pic">show pic</button>
+        <button id="pick_one">Pick one</button>
+        <script>
+            var btn = document.getElementById('show_pic');
+            btn.addEventListener('click', function(){
+               for(var i=0;i<100;i++)
+               {
+                   var img_index;
+                   if(i<10)
+                       img_index = '0' + i.toString();
+                   else
+                       img_index = i.toString();
+                   var file_name = img_index + "d.png\'";
+                   var img_url = "<img src="+"\'http://openweathermap.org/img/w/" + file_name + ">";
+                   document.write(img_url);
+                   if(i%10 === 0)
+                        document.write("<br>");
+               }
+            });
+            var btn_pick = document.getElementById('pick_one');
+            btn_pick.addEventListener('click', function(){
+                
+            });
+        </script>
     </body>
 </html>
